@@ -318,7 +318,7 @@ class TerminalPanel():
 
                 # 尝试查找并提取API中的有关本条记录的TCP连接数信息
                 for line in res.splitlines():
-                    if line.find("ehco_traffic_current_tcp_num{hostname=") == 0:
+                    if line.find("ehco_traffic_current_connection_count{hostname=") == 0:
                         if line.find(k['tcp_remotes'][0]) != -1:
                             print(" TCP连接数："+line[line.find("}")+2:], end="")
                             Cflag = False
@@ -345,7 +345,7 @@ class TerminalPanel():
                 Collection.append(k['listen'].split(':')[1])
                 print("%s%d.%s 落地模式 %s %s --> %s" % (colorConst.green_prefix,count,colorConst.plain_prefix,k['listen'],k['listen_type'],k['tcp_remotes'][0]), end="")
                 for line in res.splitlines():
-                    if line.find("ehco_traffic_current_tcp_num{hostname=") == 0:
+                    if line.find("ehco_traffic_current_connection_count{hostname=") == 0:
                         if line.find(k['tcp_remotes'][0]) != -1:
                             print(" TCP连接数："+line[line.find("}")+2:], end="")
                             Cflag = False
