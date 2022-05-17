@@ -318,43 +318,24 @@ class TerminalPanel():
 
                 # 尝试查找并提取API中的有关本条记录的TCP连接数信息
                 for line in res.splitlines():
-                    if line.find("ehco_traffic_current_connection_count{hostname=") == 0:
+                    if line.find("ehco_traffic_current_tcp_num{hostname=") == 0:
                         if line.find(k['tcp_remotes'][0]) != -1:
                             print(" TCP连接数："+line[line.find("}")+2:], end="")
                             Cflag = False
                 # API中没有找到本条转发的TCP连接数信息，重置为0
                 if Cflag:
                     print(" TCP连接数：0", end="")
-                for line in res.splitlines():
-                    if line.find("ehco_traffic_current_connection_count{hostname=") == 0:
-                        if line.find("-" + k['udp_remotes']) != -1:
-                            print(" UDP连接数："+line[line.find("}")+2:], end="")
-                            Cflag = False
-                # API中没有找到本条转发的TCP连接数信息，重置为0
-                if Cflag:
-                    print(" UDP连接数：0", end="")
+
                 # 尝试查找并提取API中的有关本条记录的流量使用值信息
                 for line in res.splitlines():
                     if line.find("ehco_traffic_network_transmit_bytes{hostname=") == 0:
-                        if line.find('-' + k['udp_remotes'][0]) != -1:
-                             ttu=float(line[line.find("}")+2:])
-                             print(" udp流量" + self.BandwidthShow(ttu))
-                for line in res.splitlines():
-                    if line.find("ehco_traffic_network_transmit_bytes{hostname=") == 0:
                         if line.find(k['tcp_remotes'][0]) != -1:
                             Bflag = False
                             Collection.append(float(line[line.find("}")+2:]))
                 # API中没有找到本条转发的流量使用值信息，重置为0
                 if Bflag:
                     Collection.append(0)
-                for line in res.splitlines():
-                    if line.find("ehco_traffic_network_transmit_bytes{hostname=") == 0:
-                        if line.find(k['tcp_remotes'][0]) != -1:
-                            Bflag = False
-                            Collection.append(float(line[line.find("}")+2:]))
-                # API中没有找到本条转发的流量使用值信息，重置为0
-                if Bflag:
-                    Collection.append(0)
+
                 count = count + 1
                 flowRes = self.DBHandler.updateData(Collection)
                 print(self.BandwidthShow(flowRes))
@@ -364,7 +345,7 @@ class TerminalPanel():
                 Collection.append(k['listen'].split(':')[1])
                 print("%s%d.%s 落地模式 %s %s --> %s" % (colorConst.green_prefix,count,colorConst.plain_prefix,k['listen'],k['listen_type'],k['tcp_remotes'][0]), end="")
                 for line in res.splitlines():
-                    if line.find("ehco_traffic_current_connection_count{hostname=") == 0:
+                    if line.find("ehco_traffic_current_tcp_num{hostname=") == 0:
                         if line.find(k['tcp_remotes'][0]) != -1:
                             print(" TCP连接数："+line[line.find("}")+2:], end="")
                             Cflag = False
