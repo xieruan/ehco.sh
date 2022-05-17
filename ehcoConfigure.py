@@ -339,13 +339,15 @@ class TerminalPanel():
                         if line.find(k['tcp_remotes'][0]) != -1:
                             Bflag = False
                             Collection.append(float(line[line.find("}")+2:]))
+                        if line.find('-' + k['udp_remotes'][0]) != -1:
+                            ttu=float(line[line.find("}")+2:])
                 # API中没有找到本条转发的流量使用值信息，重置为0
                 if Bflag:
                     Collection.append(0)
 
                 count = count + 1
                 flowRes = self.DBHandler.updateData(Collection)
-                print(self.BandwidthShow(flowRes))
+                print(self.BandwidthShow(flowRes),"udp流量为：" + BandwidthShow(ttu))
 
 
             if k['listen_type'] != 'raw' and k['transport_type'] == 'raw':
