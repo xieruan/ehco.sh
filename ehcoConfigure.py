@@ -327,7 +327,7 @@ class TerminalPanel():
                     print(" TCP连接数：0", end="")
                 for line in res.splitlines():
                     if line.find("ehco_traffic_current_connection_count{hostname=") == 0:
-                        if line.find('-' + k['udp_remotes']) != -1:
+                        if line.find("-" + k['udp_remotes']) != -1:
                             print(" UDP连接数："+line[line.find("}")+2:], end="")
                             Cflag = False
                 # API中没有找到本条转发的TCP连接数信息，重置为0
