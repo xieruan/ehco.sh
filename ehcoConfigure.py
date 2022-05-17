@@ -318,14 +318,21 @@ class TerminalPanel():
 
                 # 尝试查找并提取API中的有关本条记录的TCP连接数信息
                 for line in res.splitlines():
-                    if line.find("ehco_traffic_current_tcp_num{hostname=") == 0:
+                    if line.find("ehco_traffic_current_connection_count{hostname=") == 0:
                         if line.find(k['tcp_remotes'][0]) != -1:
                             print(" TCP连接数："+line[line.find("}")+2:], end="")
                             Cflag = False
                 # API中没有找到本条转发的TCP连接数信息，重置为0
                 if Cflag:
                     print(" TCP连接数：0", end="")
-
+                for line in res.splitlines():
+                    if line.find("ehco_traffic_current_connection_count{hostname=") == 0:
+                        if line.find('-' + k['udp_remotes'][0]) != -1:
+                            print(" UDP连接数："+line[line.find("}")+2:], end="")
+                            Cflag = False
+                # API中没有找到本条转发的TCP连接数信息，重置为0
+                if Cflag:
+                    print(" UDP连接数：0", end="")
                 # 尝试查找并提取API中的有关本条记录的流量使用值信息
                 for line in res.splitlines():
                     if line.find("ehco_traffic_network_transmit_bytes{hostname=") == 0:
@@ -352,6 +359,14 @@ class TerminalPanel():
                 if Cflag:
                     print(" TCP连接数：0", end="")
                 for line in res.splitlines():
+                    if line.find("ehco_traffic_current_connection_count{hostname=") == 0:
+                        if line.find('-' + k['udp_remotes'][0]) != -1:
+                            print(" UDP连接数："+line[line.find("}")+2:], end="")
+                            Cflag = False
+                # API中没有找到本条转发的TCP连接数信息，重置为0
+                if Cflag:
+                    print(" UDP连接数：0", end="")
+                    for line in res.splitlines():
                     if line.find("ehco_traffic_network_transmit_bytes{hostname=") == 0:
                         if line.find(k['tcp_remotes'][0]) != -1:
                             Bflag = False
